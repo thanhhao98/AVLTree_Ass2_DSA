@@ -221,7 +221,7 @@ bool AVLTree<T>::remove(AVLNode<T>* &pR, T a){
         } else {
             return false;
         }
-    } else if(pR->data==a) {
+    } else {
         if(!pR->_pLeft&&!pR->_pRight){
             pR=NULL;
         } else if(!pR->_pLeft){
