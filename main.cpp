@@ -16,13 +16,16 @@ private:
 public:
     AVLTree<T>(): _pRoot(NULL){};
     AVLTree<T>(T &a);
-    ~AVLTree<T>(){destroy(_pRoot);}
+    ~AVLTree<T>(){release(this->_pRoot);}
     AVLNode<T>* &getRoot(){return _pRoot;};
     bool insert(T a){return insert(this->_pRoot, a); }
     bool remove(T a){return remove(this->_pRoot, a); }
+    AVLNode<T>* find(T a){return find(this->_pRoot, a); }
 protected:
     bool insert(AVLNode<T>* &pR, T a);
     bool remove(AVLNode<T>* &pR, T a);
+    AVLNode<T>* find(AVLNode<T>* pR, T a);
+    void release(AVLNode<T>* &pR);
 
     void roteLeft(AVLNode<T>* &pR);
     void roteRight(AVLNode<T>* &pR);
@@ -258,9 +261,31 @@ bool AVLTree<T>::remove(AVLNode<T>* &pR, T a){
     }
 }
 
+template <class T>
+AVLNode<T>* AVLTree<T>::find(AVLNode<T>* pR, T a){
+    if(!pR){
+        return NULL;
+    } else if(pR->data==a){
+        return pR;
+    } else if(pR->data<a){
+        return find(pR->_pRight,a);
+    } else return find(pR->_pLeft,a);
+}
+
+template <class T>
+void AVLTree<T>::release(AVLNode<T>* &pR){
+    if(pR){
+        if(pR->_pLeft){
+            release(pR->_pLeft);
+        }
+        if(pR->_pRight){
+            release(pR->_pRight);
+        }
+        delete(pR);
+    }
+}
 
 int main(){    
-
 
 
 
